@@ -57,21 +57,26 @@ CREATE TABLE consultorio(
 /*
     *  USUARIO
 */
-ALTER TABLE usuario ADD usu_tipodoc INT NOT NULL;
-ALTER TABLE usuario ADD usu_genero INT NOT NULL;
-ALTER TABLE usuario ADD usu_acudiente INT NOT NULL;
+ALTER TABLE usuario ADD usu_tipodoc INT NOT NULL, 
+    ADD usu_genero INT NOT NULL, 
+    ADD usu_acudiente INT NOT NULL
+;
 /*
     * CITA
 */
-ALTER TABLE cita ADD cit_datosUsuario INT NOT NULL;
-ALTER TABLE cita ADD cit_estadoCita INT NOT NULL;
-ALTER TABLE cita ADD cit_medico INT NOT NULL;
+ALTER TABLE cita 
+    ADD cit_datosUsuario INT NOT NULL,
+    ADD cit_estadoCita INT NOT NULL,
+    ADD cit_medico INT NOT NULL
+;
 
 /*
     * MEDICO
 */
-ALTER TABLE medico ADD med_especialidad INT NOT NULL;
-ALTER TABLE medico ADD med_consultorio INT NOT NULL;
+ALTER TABLE medico 
+    ADD med_especialidad INT NOT NULL,
+    ADD med_consultorio INT NOT NULL
+;
 
 
 /*
@@ -81,24 +86,27 @@ TODO: RELACIONES CON LAS LLAVES FORANEAS
 /*
 *   USUARIO
 */
-ALTER TABLE usuario ADD CONSTRAINT usuario_tipo_documento_fk FOREIGN KEY (usu_tipodoc) REFERENCES tipo_documento (tipdoc_id);
-ALTER TABLE usuario ADD CONSTRAINT usuario_genero_fk FOREIGN KEY (usu_genero) REFERENCES genero (gen_id);
-ALTER TABLE usuario ADD CONSTRAINT usuario_acudiente_fk FOREIGN KEY (usu_acudiente) REFERENCES acudiente (acu_codigo);
-
+ALTER TABLE usuario 
+    ADD CONSTRAINT usuario_tipo_documento_fk FOREIGN KEY (usu_tipodoc) REFERENCES tipo_documento (tipdoc_id),
+    ADD CONSTRAINT usuario_genero_fk FOREIGN KEY (usu_genero) REFERENCES genero (gen_id),
+    ADD CONSTRAINT usuario_acudiente_fk FOREIGN KEY (usu_acudiente) REFERENCES acudiente (acu_codigo)
+;
 /*
 *  CITA
 */
 
-ALTER TABLE cita ADD CONSTRAINT cita_usuarios_fk FOREIGN KEY (cit_datosUsuario) REFERENCES usuario (usu_id);
-ALTER TABLE cita ADD CONSTRAINT cita_estado_cita_fk FOREIGN KEY (cit_estadoCita) REFERENCES estado_cita (estcita_id);
-ALTER TABLE cita ADD CONSTRAINT cita_medico_fk FOREIGN KEY (cit_medico) REFERENCES medico (med_nroMatriculaProsional);
-
+ALTER TABLE cita 
+    ADD CONSTRAINT cita_usuarios_fk FOREIGN KEY (cit_datosUsuario) REFERENCES usuario (usu_id),
+    ADD CONSTRAINT cita_estado_cita_fk FOREIGN KEY (cit_estadoCita) REFERENCES estado_cita (estcita_id),
+    ADD CONSTRAINT cita_medico_fk FOREIGN KEY (cit_medico) REFERENCES medico (med_nroMatriculaProsional)
+;
 /*
 * MEDICO
 */
-ALTER TABLE medico ADD CONSTRAINT medico_especialidad_fk FOREIGN KEY (med_especialidad) REFERENCES especialidad (esp_id);
-ALTER TABLE medico ADD CONSTRAINT medico_consultorio_fk FOREIGN KEY (med_consultorio) REFERENCES consultorio (cons_codigo);
-
+ALTER TABLE medico 
+    ADD CONSTRAINT medico_especialidad_fk FOREIGN KEY (med_especialidad) REFERENCES especialidad (esp_id),
+    ADD CONSTRAINT medico_consultorio_fk FOREIGN KEY (med_consultorio) REFERENCES consultorio (cons_codigo)
+;
 
 /*
 TODO INSERTS
@@ -109,7 +117,6 @@ TODO INSERTS
 INSERT INTO tipo_documento (tipdoc_nombre,tipdoc_abreviatura) VALUES ('Cedula de Ciudadania','Cc');
 INSERT INTO tipo_documento (tipdoc_nombre,tipdoc_abreviatura) VALUES ('Tarjeta de Identidad','T.i');
 INSERT INTO tipo_documento (tipdoc_nombre,tipdoc_abreviatura) VALUES ('Pasaporte','Past');
-
 
 /*
 *   GENERO
