@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --quiet ./backend/src/index.js"
+    "dev": "nodemon --quiet ./backend/src/index.js",
+    "config": "nodemon --quiet ./backend/src/config.js"
   },
   "keywords": [],
   "author": "",
