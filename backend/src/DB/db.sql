@@ -157,10 +157,11 @@ INSERT INTO estado_cita (estcita_nombre) VALUES ("ACTIVA"), ('SUPENDIDA'), ('CAN
 *   MEDICO
 */
 INSERT INTO
-    medico (med_nroMatriculaProsional,med_nombreCompleto,med_consultorio,med_especialidad) VALUES ("465899584","David Rojas",1,1);
+    medico (med_nroMatriculaProsional,med_nombreCompleto,med_consultorio,med_especialidad) VALUES (465899584,"David Rojas",1,1);
 
 /*
 *   CITA
 */
-INSERT INTO cita(cit_fecha,cit_estadoCita,cit_medico,cit_datosUsuario) VALUES ("2023-07-12 10:30:00",1,465899584,74)
+INSERT INTO cita(cit_fecha,cit_estadoCita,cit_medico,cit_datosUsuario) VALUES ("2023-07-12 10:30:00",1,465899584,74);
 
+SELECT * FROM usuario;
