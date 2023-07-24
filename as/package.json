@@ -1,0 +1,13 @@
+{
+  "name": "biblioteca_campus",
+  "version": "1.0.0",
+  "description": "Prueba de node",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev" : "nodemon --quiet ./app.js"
+  },
+  "keywords": [],
+  "author": "https://github.com/JuanDavidAvilaRaveloCampus",
+  "license": "ISC"
+}
