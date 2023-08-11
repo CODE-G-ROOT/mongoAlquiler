@@ -1,0 +1,774 @@
+//?  CHECK
+use("db_campus_alquiler");
+db.createCollection("alquiler", {
+  capped: true,
+  size: 650,
+  max: 5,
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_Alquiler",
+        "ID_Cliente",
+        "ID_Automovil",
+        "Fecha_Inicio",
+        "Fecha_Fin",
+        "Teléfono",
+        "Estado",
+      ],
+      properties: {
+        ID_Alquiler: {
+          bsonType: "int",
+          description: "identificador del alquiler al que pertenece"
+        },
+        ID_Cliente: {
+          bsonType: "int",
+          description: "identificador del cliente al que pertenece"
+        },
+        ID_Automovil: {
+          bsonType: "int",
+          description: "identificador del auto al que pertenece"
+        },
+        Fecha_Inicio: {
+          bsonType: "date",
+          description: "fecha de inicio del alquiler"
+        },
+        Fecha_Fin: {
+          bsonType: "date",
+          description: "fecha de entrega del alquiler"
+        },
+        Teléfono: {
+          bsonType: "string",
+          description: "telefono xd"
+        },
+        Estado: {
+          bsonType: "string",
+          description: "estado actual del alquiler",
+        },
+      },
+    },
+  },
+  validationLevel : "strict",
+  validationAction: "error"
+});
+db.alquiler.insertMany([
+  {
+    "ID_Alquiler": 1,
+    "ID_Cliente": 1,
+    "ID_Automovil": 1,
+    "Fecha_Inicio": ISODate("2023-08-15T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-07-31T00:00:00Z"),
+    "Teléfono": "3176537249",
+    "Estado": "Activo"
+  },
+  {
+    "ID_Alquiler": 2,
+    "ID_Cliente": 2,
+    "ID_Automovil": 2,
+    "Fecha_Inicio": ISODate("2023-08-01T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-08-15T00:00:00Z"),
+    "Teléfono": "789654123",
+    "Estado": "Disponible"
+  },
+  {
+    "ID_Alquiler": 3,
+    "ID_Cliente": 3,
+    "ID_Automovil": 3,
+    "Fecha_Inicio": ISODate("2023-09-01T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-09-30T00:00:00Z"),
+    "Teléfono": "321987654",
+    "Estado": "Disponible"
+  },
+  {
+    "ID_Alquiler": 4,
+    "ID_Cliente": 4,
+    "ID_Automovil": 4,
+    "Fecha_Inicio": ISODate("2023-07-15T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-07-25T00:00:00Z"),
+    "Teléfono": "456789321",
+    "Estado": "Innactivo"
+  }
+]);
+
+//? CHECK
+use("db_campus_alquiler");
+db.createCollection("automovil", {
+  capped: true,
+  size: 650,
+  max: 5,
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_Automovil",
+        "Marca",
+        "Modelo",
+        "Año",
+        "Tipo",
+        "Capacidad",
+        "Precio_Diario"
+      ],
+      properties: {
+        ID_Automovil: {
+          bsonType: "int",
+          description: "Identificador del automovil",
+        },
+        Marca: {
+          bsonType: "string",
+          description: "nombre de la marca",
+        },
+        Modelo: {
+          bsonType: "string",
+          description: "modelo de la marca",
+        },
+        Año: {
+          bsonType: "int",
+          description: "año de automovil, solo se permite el ingreso del año como número, no como fecha",
+        },
+        Tipo: {
+          bsonType: "string",
+          description: "año de automovil",
+        },
+        Capacidad: {
+          bsonType: "int",
+          description: "capacidad de cupos en el auto",
+        },
+        Precio_Diario: {
+          bsonType: "int",
+          description: "precio del automovil",
+        },
+      }
+    }
+  },
+  validationLevel: "strict",
+  validationAction: "error"
+});
+db.automovil.insertMany([
+  {
+    "ID_Automovil": 1,
+    "Marca": "Honda",
+    "Modelo": "Civic",
+    "Año": 2023,
+    "Tipo": "carro",
+    "Capacidad": 4,
+    "Precio_Diario": 160000
+  },
+  {
+    "ID_Automovil": 2,
+    "Marca": "Honda",
+    "Modelo": "Civic",
+    "Año": 2023,
+    "Tipo": "carro",
+    "Capacidad": 4,
+    "Precio_Diario": 160000
+  },
+  {
+    "ID_Automovil": 3,
+    "Marca": "Chevrolet",
+    "Modelo": "Spark",
+    "Año": 2023,
+    "Tipo": "carro",
+    "Capacidad": 4,
+    "Precio_Diario": 140000
+  },
+  {
+    "ID_Automovil": 4,
+    "Marca": "Ford",
+    "Modelo": "Focus",
+    "Año": 2023,
+    "Tipo": "carro",
+    "Capacidad": 4,
+    "Precio_Diario": 170000
+  }
+]);
+
+//? CHECK
+use("db_campus_alquiler");
+db.createCollection("cliente", {
+  capped: true,
+  size: 1000,
+  max: 5,
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_Cliente",
+        "Nombre",
+        "Apellido",
+        "DNI",
+        "Dirección",
+        "Teléfono",
+        "Email",
+      ],
+      properties: {
+        ID_Cliente: {
+          bsonType: "int",
+          description: "Identificador del automovil",
+        },
+        Nombre: {
+          bsonType: "string",
+          description: "Identificador del automovil",
+        },
+        Apellido: {
+          bsonType: "string",
+          description: "Identificador del automovil",
+        },
+        DNI: {
+          bsonType: "int",
+          description: "Identificador del automovil",
+        },
+        Dirección: {
+          bsonType: "string",
+          description: "Identificador del automovil",
+        },
+        Teléfono: {
+          bsonType: "int",
+          description: "Identificador del automovil",
+        },
+        Email: {
+          bsonType: "string",
+          description: "Identificador del automovil",
+          // pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        },
+      }
+    }
+  },
+  validationAction: "error"
+});
+db.cliente.insertMany([
+  {
+    "ID_Cliente": Int32(1),
+    "Nombre": "Juan",
+    "Apellido": "Avila",
+    "DNI": Int32(317456987),
+    "Dirección": "Calle 104E",
+    "Teléfono": Int32(3176537249),
+    "Email": "juanavila8856@gmail.com"
+  },
+  {
+    "ID_Cliente": Int32(2),
+    "Nombre": "María",
+    "Apellido": "García",
+    "DNI": Int32(789012345),
+    "Dirección": "Avenida Central, 456",
+    "Teléfono": Int32(987654321),
+    "Email": "mariagarcia123@gmail.com"
+  },
+  {
+    "ID_Cliente": Int32(3),
+    "Nombre": "Pedro",
+    "Apellido": "López",
+    "DNI": Int32(678901234),
+    "Dirección": "Plaza Mayor, 789",
+    "Teléfono": Int32(321654987),
+    "Email": "pedrolopez789@gmail.com"
+  },
+  {
+    "ID_Cliente": Int32(4),
+    "Nombre": "Laura",
+    "Apellido": "Martínez",
+    "DNI": Int32(345678901),
+    "Dirección": "Calle Secundaria, 111",
+    "Teléfono": Int32(147258369),
+    "Email": "lauramartinez456@gmail.com"
+  }
+]);
+
+//?  CHECK
+use("db_campus_alquiler");
+db.createCollection("empleado"), {
+  capped: true,
+  size: 850,
+  max: 5,
+  validator: {
+    bsonType: "object",
+    required: [
+      "ID_Empleado",
+      "Nombre",
+      "Apellido",
+      "DNI",
+      "Dirección",
+      "Telefono",
+      "Cargo",
+    ],
+    properties: {
+      ID_Empleado: {
+        bsonType: "int",
+        description: "identificador del empleado al que pertenece"
+      },
+      Nombre: {
+        bsonType: "string",
+        description: "Nombre del empleado"
+      },
+      Apellido: {
+        bsonType: "string",
+        description: "Nombre del empleado"
+      },
+      DNI: {
+        bsonType: "int",
+        description: "identificador DNI del empleado"
+      },
+      Dirección: {
+        bsonType: "string",
+        description: "Dirección de residencia del empleado"
+      },
+      Telefono: {
+        bsonType: "string",
+        description: "Número de contacto del empleado"
+      },
+      Cargo: {
+        bsonType: "string",
+        description: "Cargo al que pertenece el empleado",
+        enum: [
+          "Gerente",
+          "Supervisor",
+          "Asistente",
+          "Recepcionista",
+          "Operador",
+        ]
+      },
+    }
+  },
+  validationLevel: "strict",
+  validationAction: "error"
+};
+db.empleado.insertMany([
+  {
+    "ID_Empleado": 1,
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "DNI": "12345678A",
+    "Dirección": "Calle Principal, 123",
+    "Telefono": "987654321",
+    "Cargo": "Gerente"
+  },
+  {
+    "ID_Empleado": 2,
+    "Nombre": "María",
+    "Apellido": "González",
+    "DNI": "87654321B",
+    "Dirección": "Avenida Central, 456",
+    "Telefono": "654321987",
+    "Cargo": "Supervisor"
+  },
+  {
+    "ID_Empleado": 3,
+    "Nombre": "Pedro",
+    "Apellido": "Ramírez",
+    "DNI": "56789012C",
+    "Dirección": "Plaza Mayor, 789",
+    "Telefono": "789456123",
+    "Cargo": "Asistente"
+  },
+  {
+    "ID_Empleado": 4,
+    "Nombre": "Laura",
+    "Apellido": "López",
+    "DNI": "90123456D",
+    "Dirección": "Calle Secundaria, 111",
+    "Telefono": "111222333",
+    "Cargo": "Recepcionista"
+  },
+  {
+    "ID_Empleado": 5,
+    "Nombre": "Carlos",
+    "Apellido": "García",
+    "DNI": "65432109E",
+    "Dirección": "Avenida Principal, 987",
+    "Telefono": "444555666",
+    "Cargo": "Vendedor"
+  }
+]);
+
+//? CHECK
+//TODO LOS VALORES double deben ser validados como ['double'], además en la inserción de data, los valores que estén en un campo int, no pueden contener commillas
+//! ES OBLIGATORIO QUE LOS CAMPOS TENGAN SU FUNCIÓN CORRESPONDIENTE PARA LA INSERCIÓN
+use("db_campus_alquiler");
+db.createCollection("registro_devolución", {
+  capped: true,
+  size: 950,
+  max: 5,
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_Registro",
+        "ID_Alquiler",
+        "ID_Empleado",
+        "Fecha_Devolución",
+        "Combustible_Devolución",
+        "Kilometraje_Devuelto",
+        "Monto_Adicional"
+      ],
+      properties: {
+        ID_Registro: {
+          bsonType: "int",
+          description: "identificador del Registro al que pertenece"
+        },
+        ID_Alquiler: {
+          bsonType: "int",
+          description: "identificador del Alquiler al que pertenece"
+        },
+        ID_Empleado: {
+          bsonType: "int",
+          description: "identificador del empleado al que pertenece"
+        },
+        Fecha_Devolución: {
+          bsonType: "date",
+          description: "Fecha de devolución del registro"
+        },
+        Combustible_Devolución: {
+          bsonType: ['double'],
+          description: "cantidad de combustible devuelto"
+        },
+        Kilometraje_Devuelto: {
+          bsonType: ['double'],
+          description: "kilometraje devuelto"
+        },
+        Monto_Adicional: {
+          bsonType: "int",
+          description: "monto adicional por devolución"
+        },
+      }
+    }
+  },
+  validationAction: "error"
+});
+db.registro_devolución.insertMany([
+  {
+    "ID_Registro": Int32(1),
+    "ID_Alquiler": Int32(123),
+    "ID_Empleado": Int32(1),
+    "Fecha_Devolución": ISODate("2023-07-31T00:00:00Z"),
+    "Combustible_Devolución": Double(50.25),
+    "Kilometraje_Devuelto": Double(1200.75),
+    "Monto_Adicional": Int32(50)
+  },
+  {
+    "ID_Registro": Int32(2),
+    "ID_Alquiler": Int32(456),
+    "ID_Empleado": Int32(2),
+    "Fecha_Devolución": ISODate("2023-07-30T00:00:00Z"),
+    "Combustible_Devolución": Double(40.5),
+    "Kilometraje_Devuelto": Double(1050.25),
+    "Monto_Adicional": Int32(30)
+  },
+  {
+    "ID_Registro": Int32(3),
+    "ID_Alquiler": Int32(789),
+    "ID_Empleado": Int32(3),
+    "Fecha_Devolución": ISODate("2023-07-29T00:00:00Z"),
+    "Combustible_Devolución": Double(60.75),
+    "Kilometraje_Devuelto": Double(1500),
+    "Monto_Adicional": Int32(20)
+  },
+  {
+    "ID_Registro": Int32(4),
+    "ID_Alquiler": Int32(101112),
+    "ID_Empleado": Int32(4),
+    "Fecha_Devolución": ISODate("2023-07-28T00:00:00Z"),
+    "Combustible_Devolución": Double(45),
+    "Kilometraje_Devuelto": Double(1350.5),
+    "Monto_Adicional": Int32(40)
+  },
+  {
+    "ID_Registro": Int32(5),
+    "ID_Alquiler": Int32(131415),
+    "ID_Empleado": Int32(5),
+    "Fecha_Devolución": ISODate("2023-07-27T00:00:00Z"),
+    "Combustible_Devolución": Double(55.5),
+    "Kilometraje_Devuelto": Double(1400.75),
+    "Monto_Adicional": Int32(25)
+  }
+]);
+
+//? CHECK
+//! PARA LOS VALORES DOUBLE, ES IMPORTANTISIMO QUE != 0 && != "NUMBER" + .00
+//Para que el double pase, es importante que sus inserts sean
+//number != int
+//number >= 0.01
+use("db_campus_alquiler");
+db.createCollection("registro_entrega", {
+  capped: true,
+  size: 850,
+  max: 5,
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_Registro",
+        "ID_Alquiler",
+        "ID_Empleado",
+        "Fecha_Entregado",
+        "Combustible_Entregado",
+        "Kilometraje_Entregado",
+      ],
+      properties: {
+        ID_Registro: {
+          bsonType: "int",
+          description: "identificador del Registro al que pertenece"
+        },
+        ID_Alquiler: {
+          bsonType: "int",
+          description: "identificador del Registro al que pertenece"
+        },
+        ID_Empleado: {
+          bsonType: "int",
+          description: "identificador del Registro al que pertenece"
+        },
+        Fecha_Entregado: {
+          bsonType: "date",
+          description: "identificador del Registro al que pertenece"
+        },
+        Combustible_Entregado: {
+          bsonType: ["double"],
+          description: "identificador del Registro al que pertenece"
+        },
+        Kilometraje_Entregado: {
+          bsonType: ["double"],
+          description: "identificador del Registro al que pertenece"
+        },
+      }
+    }
+  },
+  validationLevel : "strict",
+  validationAction: "error"
+});
+db.registro_entrega.insertMany([
+  {
+    //? SI PASA
+    "ID_Registro": 1,
+    "ID_Alquiler": 1,
+    "ID_Empleado": 1,
+    "Fecha_Entregado": ISODate("2023-07-31T00:00:00Z"),
+    "Combustible_Entregado": 50.25,
+    "Kilometraje_Entregado": 1200.75
+  },
+  {
+    //? SI PASA
+    "ID_Registro": 2,
+    "ID_Alquiler": 2,
+    "ID_Empleado": 2,
+    "Fecha_Entregado": ISODate("2023-07-30T00:00:00Z"),
+    "Combustible_Entregado": 40.5,
+    "Kilometraje_Entregado": 1050.25
+  },
+  {
+    //TODO
+    // 
+
+    "ID_Registro": 3,
+    "ID_Alquiler": 3,
+    "ID_Empleado": 3,
+    "Fecha_Entregado": ISODate("2023-07-29T00:00:00Z"),
+    "Combustible_Entregado": 60.75,
+    "Kilometraje_Entregado": 1500.01
+  },
+  {
+    //! FALLA LA VALIDACIÓN
+    "ID_Registro": 4,
+    "ID_Alquiler": 4,
+    "ID_Empleado": 4,
+    "Fecha_Entregado": ISODate("2023-07-28T00:00:00Z"),
+    "Combustible_Entregado": 45.01,
+    "Kilometraje_Entregado": 1350.50
+  }
+]);
+
+//? CHECK
+use("db_campus_alquiler");
+db.createCollection("reserva", {
+  capped: true,
+  size: 850,
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_Reserva",
+        "ID_Cliente",
+        "ID_Automovil",
+        "Fecha_Reserva",
+        "Fecha_Inicio",
+        "Fecha_Fin",
+        "Estado",
+      ],
+      properties: {
+        ID_Reserva : {
+          bsonType : "int",
+        },
+        ID_Cliente : {
+          bsonType : "int",
+        },
+        ID_Automovil : {
+          bsonType : "int",
+        },
+        Fecha_Reserva : {
+          bsonType : "date",
+        },
+        Fecha_Inicio : {
+          bsonType : "date",
+        },
+        Fecha_Fin : {
+          bsonType : "date",
+        },
+        Estado : {
+          bsonType : "string",
+        },
+      }
+    }
+  },
+  validationLevel : "strict",
+  validationAction: "error"
+});
+db.reserva.insertMany([
+  {
+    "ID_Reserva": 1,
+    "ID_Cliente": 1,
+    "ID_Automovil": 1,
+    "Fecha_Reserva": ISODate("2023-06-01T00:00:00Z"),
+    "Fecha_Inicio": ISODate("2023-07-01T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-07-31T00:00:00Z"),
+    "Estado": "Pendiente"
+  },
+  {
+    "ID_Reserva": 2,
+    "ID_Cliente": 2,
+    "ID_Automovil": 2,
+    "Fecha_Reserva": ISODate("2023-05-15T00:00:00Z"),
+    "Fecha_Inicio": ISODate("2023-08-01T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-08-15T00:00:00Z"),
+    "Estado": "Disponible"
+  },
+  {
+    "ID_Reserva": 3,
+    "ID_Cliente": 3,
+    "ID_Automovil": 3,
+    "Fecha_Reserva": ISODate("2023-07-20T00:00:00Z"),
+    "Fecha_Inicio": ISODate("2023-09-01T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-09-30T00:00:00Z"),
+    "Estado": "Disponible"
+  },
+  {
+    "ID_Reserva": 4,
+    "ID_Cliente": 4,
+    "ID_Automovil": 4,
+    "Fecha_Reserva": ISODate("2023-06-25T00:00:00Z"),
+    "Fecha_Inicio": ISODate("2023-07-15T00:00:00Z"),
+    "Fecha_Fin": ISODate("2023-07-25T00:00:00Z"),
+    "Estado": "Pendiente"
+  }
+]);
+
+//? CHECK
+use("db_campus_alquiler");
+db.createCollection("sucursal", {
+  capped : true,
+  size : 520,
+  max : 5,
+  validator : {
+    $jsonSchema : {
+      bsonType : "object",
+      required : [
+        "ID_Sucursal",
+        "Nombre",
+        "Dirección",
+        "Teléfono",
+      ],
+      properties : {
+        ID_Sucursal : {
+          bsonType : "int",
+        },
+        Nombre : {
+          bsonType : "string",
+        },
+        Dirección : {
+          bsonType : "string",
+        },
+        Teléfono : {
+          bsonType : "int",
+        },
+      }
+    }
+  },
+  validationAction : "error",
+  validationLevel : "strict"
+});
+db.sucursal.insertMany([
+  {
+    "ID_Sucursal": 1,
+    "Nombre": "Sucursal_1",
+    "Dirección": "Calle 104E",
+    "Teléfono": Int32(137564813)
+  },
+  {
+    "ID_Sucursal": 2,
+    "Nombre": "Sucursal_2",
+    "Dirección": "Avenida Central, 456",
+    "Teléfono": Int32(987654321)
+  },
+  {
+    "ID_Sucursal": 3,
+    "Nombre": "Sucursal_3",
+    "Dirección": "Plaza Mayor, 789",
+    "Teléfono": Int32(321654987)
+  },
+  {
+    "ID_Sucursal": 4,
+    "Nombre": "Sucursal_4",
+    "Dirección": "Calle Secundaria, 111",
+    "Teléfono": Int32(147258369)
+  }
+]);
+
+//? CHECK
+use("db_campus_alquiler");
+db.createCollection("sucursal_automovil", {
+  capped : true,
+  size : 405,
+  max : 5,
+  validator : {
+    $jsonSchema : {
+      bsonType : "object",
+      required : [
+        "ID_Sucursal",
+        "ID_Automovil",
+        "Cantidad_Disponible",
+      ],
+      properties : {
+        ID_Sucursal : {
+          bsonType : "int"
+        },
+        ID_Automovil : {
+          bsonType : "int"
+        },
+        Cantidad_Disponible : {
+          bsonType : "int"
+        },
+      }
+    }
+  },
+  validationAction: "error",
+  validationLevel: "strict"
+});
+db.sucursal_automovil.insertMany([
+  {
+    "ID_Sucursal": 1,
+    "ID_Automovil": 1,
+    "Cantidad_Disponible": Int32(777)
+  },
+  {
+    "ID_Sucursal": 2,
+    "ID_Automovil": 2,
+    "Cantidad_Disponible": Int32(500)
+  },
+  {
+    "ID_Sucursal": 3,
+    "ID_Automovil": 3,
+    "Cantidad_Disponible": Int32(300)
+  },
+  {
+    "ID_Sucursal": 4,
+    "ID_Automovil": 4,
+    "Cantidad_Disponible": Int32(100)
+  }
+]);
