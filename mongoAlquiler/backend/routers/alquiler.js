@@ -8,17 +8,13 @@ const alquiler = Router();
 
 //? CHECK
 alquiler.get("/alquiler", confiGET(), async (req, res) => {
-  try {
-    let collection = await db.collection("alquiler");
-    let results = await collection.find({})
-      .limit(50)
-      .toArray();
-    console.log(req.rateLimit);
-    res.send(results).status(200)
-  } catch (error) {
+  let collection = await db.collection("alquiler");
+  let results = await collection.find({})
+    .limit(50)
+    .toArray();
 
-  }
-
+  console.log(req.rateLimit);
+  res.send(results).status(200)
 });
 
 //? CHECK
@@ -54,7 +50,7 @@ alquiler.get("/?search-estado=:sts", confiGET(), async (req, res) => {
     };
     query = query.Estado;
 
-    if (query === ":Activo" || query === ":Disponible") {
+    if (query === ":Activo" || query === ":Disponible"){
       query = query.substring(1)
       console.log(query);
     }
@@ -187,20 +183,20 @@ alquiler.get("/?search-estado=:sts", confiGET(), async (req, res) => {
 
 //? CHECK
 //Listar los alquileres con fecha de inicio entre '2023-08-01' y '2023-09-30'.
-alquiler.get("/?search-fechas=Punto_21", confiGET(), async (req, res) => {
+alquiler.get("/?search-fechas=Punto_21",  confiGET(), async(req,res)=>{
   try {
-
+    
     let collection = await db.collection('alquiler');
     const inicio = new Date("2023-08-01T00:00:00Z")
     const fin = new Date("2023-09-30T00:00:00Z")
 
-    if ((inicio = '') || (fin = '')) res.status(404).send("Query Not Found")
+    if((inicio = '') || (fin = '')) res.status(404).send("Query Not Found")
 
     let results = await collection.find({
       Fecha_Inicio: {
         $gte: inicio
       },
-      Fecha_Fin: {
+      Fecha_Fin : {
         $lte: fin
       }
     });
@@ -212,13 +208,13 @@ alquiler.get("/?search-fechas=Punto_21", confiGET(), async (req, res) => {
   }
 })
 
-alquiler.get("/?search-fechas=Punto_12", confiGET(), async (req, res) => {
+alquiler.get("/?search-fechas=Punto_12",  confiGET(), async(req,res)=>{
   try {
-
+    
     let collection = await db.collection('alquiler');
-    const fecha = new Date("2023-08-01T00:00:00Z")
+    const fecha = new Date ("2023-08-01T00:00:00Z")
 
-    if (fecha = '') res.status(404).send("Query Not Found")
+    if(fecha = '') res.status(404).send("Query Not Found")
 
     let results = await collection.find({
       Fecha_Inicio: { $gte: Fecha_Inicio }
@@ -231,12 +227,12 @@ alquiler.get("/?search-fechas=Punto_12", confiGET(), async (req, res) => {
   }
 })
 
-alquiler.get("/?search-cliente", confiGET(), async (req, res) => {
+alquiler.get("/?search-cliente", confiGET(), async(req,res)=>{
   try {
     let collection = await db.collection("alquiler");
     let results = await collection.find({});
 
-    if (results != '') res.send(204).send("Query without conent")
+    if(results != '') res.send(204).send("Query without conent")
 
     res.status(200).send(results);
   } catch (error) {
