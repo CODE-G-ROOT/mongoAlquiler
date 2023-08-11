@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 //Alquiler
-app.get("/alquiler", alquiler);
+app.use("/alquiler", alquiler);
 
 
 
