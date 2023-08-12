@@ -2,13 +2,15 @@ import db from "../connection/mongo.js";
 import { ObjectId } from "mongodb";
 
 export async function getAlquileres(req, res) {
+
     try {
+        
         let collection = await db.collection("alquiler");
         let results = await collection.find({})
             .limit(50)
             .toArray();
 
-        if (results === '') return res.status(204).send({ status: 204, message: "Not Contain" })
+        if (results == '') return res.status(204).send({ status: 204, message: "Found But Without Not Contain" })
 
         console.log(req.rateLimit);
         res.send(results).status(200)
@@ -50,10 +52,10 @@ export async function getAlquileres_actives(req, res) {
         if (query == ":Activo" || query == ":Disponible") {
             return res.status(404).send({
                 error: 404,
-                message: '',
+                message: 'Query Not Found',
                 correcttion: query.substring(1)
             }
-        )}//quita los dos puntos
+        )}//valida los dos puntos
 
         if (query === "Activo" || query === "Disponible") {
             let results = await collection.aggregate([

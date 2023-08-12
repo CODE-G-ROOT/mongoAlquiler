@@ -6,7 +6,7 @@ db.cliente.find({}, {
   Apellido: "$Apellido",
   DNI: "$DNI",
   Teléfono: "$Teléfono",
-}).sort({ _id: 1 });
+}).sort({ _id: 1 }).toArray();
 
 //TODO      Obtener todos los automóviles disponibles para alquiler.
 use("db_campus_alquiler");
@@ -45,6 +45,17 @@ db.automovil.aggregate([
     $unwind: "$alquiler",
   },
   {
+    $lookup: {
+      from: "cliente",
+      localField: "reserva.ID_Cliente",
+      foreignField: "cliente.ID_Cliente",
+      as: "cliente"
+    }
+  },
+  {
+    $unwind: "$cliente",
+  },
+  {
     $match: {
       "alquiler.Estado": "Disponible"
     }
@@ -61,6 +72,7 @@ db.automovil.aggregate([
       sucursal_automovil: { $addToSet: "$sucursal_automovil" },
       reserva: { $addToSet: "$reserva" },
       alquiler: { $addToSet: "$alquiler" },
+      cliente: { $addToSet: "$cliente" }
     }
   },
   {
@@ -78,7 +90,7 @@ db.automovil.aggregate([
       },
       reserva: {
         ID_Reserva: 1,
-        ID_Cliente: 1,
+        ID_Cliente: "$cliente",
         Fecha_Reserva: {
           $dateToString: {
             date: {

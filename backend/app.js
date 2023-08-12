@@ -1,19 +1,19 @@
 import dotenv from 'dotenv';
 import express, { application } from 'express';
+
 import alquiler from './routers/alquiler.js';
+import clientes from './routers/cliente.js';
+import automovil from './routers/automovil.js';
 
 console.clear();
 dotenv.config();
 
 const app = express();
 
-//Alquiler
-app.use("/alquiler", alquiler);
+app.use("/alquiler", alquiler); //? COMPLETE
+app.use("/automoviles", automovil) //TODO CONSTRUCTION
+// app.use("/clientes", clientes)  //TODO CONSTRUCTION
 
-
-
-
-// app.post("/campus", appCampus);
 
 const server_config = JSON.parse(process.env.SERVER_CONFIG);
 app.listen( server_config, ()=>{
