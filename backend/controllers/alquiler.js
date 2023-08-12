@@ -8,11 +8,15 @@ export async function getAlquileres(req, res) {
             .limit(50)
             .toArray();
 
+        if (results === '') return res.status(204).send({ status: 204, message: "Not Contain" })
+
         console.log(req.rateLimit);
         res.send(results).status(200)
+
     } catch (error) {
+
         console.error(error);
-        res.status(404).send("Query Not Found or Without Contain")
+        res.status(404).send("Query Not Found")
     }
 }
 
@@ -42,11 +46,14 @@ export async function getAlquileres_actives(req, res) {
             Estado: req.params.sts
         };
         query = query.Estado;
-
-        if (query === ":Activo" || query === ":Disponible") {
-            query = query.substring(1)
-            console.log(query);
-        }
+        console.log(query);
+        if (query == ":Activo" || query == ":Disponible") {
+            return res.status(404).send({
+                error: 404,
+                message: '',
+                correcttion: query.substring(1)
+            }
+        )}//quita los dos puntos
 
         if (query === "Activo" || query === "Disponible") {
             let results = await collection.aggregate([
@@ -148,13 +155,42 @@ export async function getAlquileres_actives(req, res) {
                 },
             ]).toArray();
             console.log(req.rateLimit);
-            res.status(200).send(results)
+            return res.status(200).send(results)
         }
         else {
-            res.status(404).send("Status Not Found")
+            res.status(404).send({
+                status: 404,
+                message: `${query} Not Found`,
+                example: "seach-estado=['opcion']"
+            })
+            /* OPTIONAL */
+            // res.status(404).send(`
+            // <html>
+            //  <head>
+            //      <title>Error</title>
+            //  </head>
+            //  <body>
+            //     <img src="https://http.cat/["ERROR"]>
+            //  </body>
+            // </html>
+            // `)
         }
     } catch (error) {
-        console.error(error);
+        console.error({
+            error: error,
+            message: error.message
+        });
+        /* OPTIONAL */
+        // console.error({`
+            //<html>
+            //  <head>
+            //      <title>Error</title>
+            //  </head>
+            //  <body>
+            //     <img src="https://http.cat/${error}>
+            //  </body>
+            // </html>`
+        // });
     }
 }
 
@@ -164,22 +200,41 @@ export async function getAlquileres_costo_total(req, res) {
         let query = {
             _id: new ObjectId(req.params.id)
         }
+
         let results = await collection.find(query).limit(50).toArray();
 
         console.log(req.rateLimit);
         res.send(results).status(200)
     } catch (error) {
         console.error(error);
-        res.status(404).send("Query not Found")
+        res.status(404).send({
+            status: 404,
+            message: "Query not Found"
+        })
     }
 }
 
 export async function getAlquileres_fechas(req, res) {
+    let data = undefined;
     try {
 
         let collection = await db.collection('alquiler');
-        const inicio = new Date("2023-08-01T00:00:00Z")
-        const fin = new Date("2023-09-30T00:00:00Z")
+        let query = {
+            inicio : req.params.inicio,
+            fin: req.params.fin
+        }
+        
+        data = query;
+        // let fecha_inicio = undefined;
+        // let fecha_fin = undefined;
+
+        if (query.inicio.length > 10) return fecha_inicio = query.inicio.substring(1);
+        if (query.fin.length > 10) return fecha_fin = query.fin.substring(1);
+
+        const inicio = new Date(`${query.inicio}T00:00:00Z`);
+        console.log(query.inicio);
+        console.log(query.fin);
+        const fin = new Date(`${query.fin}T00:00:00Z`);
 
         let results = await collection.find({
             Fecha_Inicio: {
@@ -190,14 +245,22 @@ export async function getAlquileres_fechas(req, res) {
             }
         }).toArray();
 
-        if ((inicio === '') || (fin === '')) return res.status(404).send("Query Not Found");
-        if(results.length === 0) return res.status(204).send("Query Not Found");
-        if(results.length > 0) return res.status(200).send(results);
+        if ((inicio == '') || (fin == '')) return res.status(404).send("Query Not Found");
+        if (results.length === 0) return res.status(204).send("Query Not Found");
+        if (results.length > 0) return res.status(200).send(results);
         else res.status(204).send("Not Content")
 
     } catch (error) {
         console.error(error);
-        res.send(500).send("Internal Server Error" + error.message)
+        res.status(500).send({
+            error: 500,
+            message: error.message,
+            date_format: "YYYY-MM-DD",
+            example: "2023-01-01",
+            data : data
+            
+        });
+
     }
 }
 
@@ -223,14 +286,14 @@ export async function getAlquileres_fecha(req, res) {
     }
 }
 
-export async function getAlquileres_cliente(req,res) {
+export async function getAlquileres_cliente(req, res) {
     {
         try {
             let collection = await db.collection("alquiler");
             let results = await collection.find({}).toArray();
-    
+
             if (results === '') res.send(204).send("Query without conent")
-    
+
             res.status(200).send(results);
         } catch (error) {
             console.log(error);
