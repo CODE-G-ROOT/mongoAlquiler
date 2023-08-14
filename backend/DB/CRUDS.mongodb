@@ -179,9 +179,9 @@ db.reserva.aggregate([
   {
     $unwind: "$automovil",
   },
-  {
-    $match: { Estado: "Pendiente" }
-  },
+  // {
+  //   $match: { Estado: "Pendiente" }
+  // },
   {
     $group: {
       _id: "$ID_Reserva",
@@ -232,6 +232,9 @@ db.reserva.aggregate([
   }
 
 ]).toArray();
+
+use("db_campus_alquiler");
+db.reserva.find({})
 
 // //? Check     Listar todos los alquileres activos junto con los datos de los clientes relacionados.
 // use("db_campus_alquiler");
