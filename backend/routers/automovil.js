@@ -1,14 +1,17 @@
 import { Router } from "express";
 import { confiGET } from "../middleware/limit.js";
+
 import { 
+    getAuomoviles_Modelo_Marca,
     getAutomoviles_Alquiler,
     getAuomoviles_QT,
     getAuomoviles_LT,
-    getAuomoviles_Modelo_Marca
+    getAutomoviles
 } from "../controllers/automoviles.js";
 
 const automovil = Router();
 
+automovil.get('/', confiGET() ,getAutomoviles);
 automovil.get('/disponibles', confiGET() ,getAutomoviles_Alquiler);
 automovil.get('/capacidad/qte=:id', confiGET(), getAuomoviles_QT);
 automovil.get('/capacidad/lte=:id', confiGET(), getAuomoviles_LT);

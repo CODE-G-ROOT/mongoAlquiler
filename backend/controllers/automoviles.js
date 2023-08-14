@@ -80,11 +80,9 @@ export async function getAutomoviles_Alquiler(req, res) {
             }
         ]).toArray();
 
-
-        //* Error Controlls
         if (!results) return res.status(404).send({ error: 404, message: "Query Not Found Or Not Exist", reference: "https://http.cat/404" });
 
-        results.length < 0
+        results.length > 0
             ? res.status(404).send({ error: 404, message: "Exist Query But Found", reference: "https://http.cat/404" })
             : res.status(302).send(results);
 
@@ -175,6 +173,27 @@ export async function getAuomoviles_Modelo_Marca(req, res) {
     } catch (error) {
         res.status(500).send({
             error: error,
+            message: error.message,
+            reference: "https://http.cat/500"
+        })
+    }
+}
+
+export async function getAutomoviles(req,res){
+
+    try {
+        
+        let collection = db.collection("automovil");
+        let results = await collection.find({});
+
+        results.length > 0
+            ? res.status(302).send(results)
+            : res.status(404).send({error: 404, message: "Query Not found or don't exist", reference: "https://http.cat/404"})
+
+    } catch (error) {
+        
+        res.status(500).send({
+            error: 500,
             message: error.message,
             reference: "https://http.cat/500"
         })
