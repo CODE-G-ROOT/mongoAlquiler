@@ -113,3 +113,26 @@ export async function get_reservas_estado(req, res) {
         })
     }
 }
+
+export async function get_reservas_estado_cliente(req,res){
+
+    try {
+        
+        let collection = await db.collection("reserva");
+        let query = {
+            ID_Cliente: Number(req.params.id),
+            Estado: req.params.sto
+        };
+
+        console.log(query);
+
+        let result = await collection.find(query).toArray();
+
+        ((query.Estado === "Pendiente") || (query.Estado === "Disponible")) && result.length > 0 
+            ? res.status(302).send(result)
+            : res.status(207).send({error: 207, message: "Param don't found or Client don't exist", reference: "https://http.cat/400"})
+
+    } catch (error) {
+        res.status(500).send({error: 500, message : error.message})
+    }
+}
