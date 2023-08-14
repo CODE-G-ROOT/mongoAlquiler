@@ -11,8 +11,8 @@ dotenv.config();
 const app = express();
 
 app.use("/alquiler", alquiler); //? COMPLETE
-app.use("/automoviles", automovil) //TODO CONSTRUCTION
-// app.use("/clientes", clientes)  //TODO CONSTRUCTION
+app.use("/automoviles", automovil) //? COMPLETE
+app.use("/clientes", clientes)  //TODO CONSTRUCTION
 
 
 const server_config = JSON.parse(process.env.SERVER_CONFIG);

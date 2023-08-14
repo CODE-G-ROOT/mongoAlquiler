@@ -230,15 +230,11 @@ export async function getAlquileres_fechas(req, res) {
         }
         
         data = query;
-        // let fecha_inicio = undefined;
-        // let fecha_fin = undefined;
 
         if (query.inicio.length > 10) return fecha_inicio = query.inicio.substring(1);
         if (query.fin.length > 10) return fecha_fin = query.fin.substring(1);
 
         const inicio = new Date(`${query.inicio}T00:00:00Z`);
-        console.log(query.inicio);
-        console.log(query.fin);
         const fin = new Date(`${query.fin}T00:00:00Z`);
 
         let results = await collection.find({
