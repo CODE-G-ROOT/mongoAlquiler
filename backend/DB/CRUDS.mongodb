@@ -337,8 +337,8 @@ db.reserva.aggregate([
 
 //? CHECK
 //TODO      Listar los empleados con el cargo de "Vendedor"
-use("db_campus_alquiler");
-db.empleado.find({ Cargo: "Vendedor" });
+// use("db_campus_alquiler");
+// db.empleado.find({ Cargo: "Vendedor" });
 
 
 
@@ -538,6 +538,7 @@ db.sucursal.aggregate([
 //     //? Toca arregar los inserts direcctamente, no por un update dado que la fecha debe de ser diferente
 // });
 
+//? CHECK
 //TODO      Listar las reservas pendientes realizadas por un cliente específico
 use("db_campus_alquiler");
 db.reserva.find({
@@ -545,6 +546,7 @@ db.reserva.find({
   Estado: "Pendiente"
 });
 
+//? CHECK
 //TODO     Mostrar los empleados con cargo de "Gerente" o "Asistente"
 use("db_campus_alquiler");
 db.empleado.find(
@@ -654,6 +656,7 @@ db.empleado.find(
 //   Marca: 1,
 //   Modelo: 1
 // });
+
 
 //TODO     Mostrar la cantidad total de automóviles en cada sucursal junto con su dirección.
 use("db_campus_alquiler");
