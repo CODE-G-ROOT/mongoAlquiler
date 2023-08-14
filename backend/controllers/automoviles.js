@@ -1,11 +1,9 @@
 import db from "../connection/mongo.js";
-import { ObjectId } from "mongodb";
 
 export async function getAutomoviles_Alquiler(req, res) {
     try {
 
         let collection = await db.collection("automovil");
-
         let results = await collection.aggregate([
             {
                 $lookup: {
@@ -82,33 +80,103 @@ export async function getAutomoviles_Alquiler(req, res) {
             }
         ]).toArray();
 
-        if(!results) res.status(404).send({error: 404, message: "Query Not Found Or Not Exist"});
-        if(results == '') res.status(404).send({error: 404, message: "Exist Query But Found Or Not Exist"});
-        else return res.status(200).send(results);
+
+        //* Error Controlls
+        if (!results) return res.status(404).send({ error: 404, message: "Query Not Found Or Not Exist", reference: "https://http.cat/404" });
+
+        results.length < 0
+            ? res.status(404).send({ error: 404, message: "Exist Query But Found", reference: "https://http.cat/404" })
+            : res.status(302).send(results);
 
         console.log(req.rateLimit);
 
     } catch (error) {
-        res.status(404).send({
+        res.status(500).send({
             error: error,
             message: error.message,
-            log: vaya
+            reference: "https://http.cat/500"
         })
     }
 }
 
-export async function getAuomoviles_QT(req,res) {
+export async function getAuomoviles_QT(req, res) {
 
     try {
-        
+
         let collection = await db.collection("automovil");
         let query = {
             Capacidad: {
-                $gte: Math.
+                $gte: Number(req.params.id)
             }
-        }
-        
+        };
+
+        let results = await collection.find(query).toArray();
+
+        results.length > 0
+            ? res.status(302).send(results)
+            : res.status(404).send({ error: 404, message: "Query Not Found", reference_error: "https://http.cat/404" });
+
     } catch (error) {
-        
+        res.send(500).send({
+            error: 500,
+            message: error.message,
+            reference: "https://http.cat/500"
+        })
+    }
+}
+
+export async function getAuomoviles_LT(req, res) {
+
+    try {
+
+        let collection = await db.collection("automovil");
+        let query = {
+            Capacidad: {
+                $lte: Number(req.params.id)
+            }
+        };
+
+        let results = await collection.find(query).toArray();
+
+        results.length > 0
+            ? res.status(302).send(results)
+            : res.status(404).send({ error: 404, message: "Query Not Found", reference_error: "https://http.cat/404" });
+
+    } catch (error) {
+        res.send(500).send({
+            error: 500,
+            message: error.message,
+            reference: "https://http.cat/500"
+        })
+    }
+}
+
+export async function getAuomoviles_Modelo_Marca(req, res) {
+
+    try {
+
+        let collection = await db.collection("automovil");
+
+        let query = {
+            Marca: 1,
+            Modelo: 1
+        }
+
+        let results = await collection.find({}).sort(query).toArray();
+
+        results.length > 0
+            ? res.status(302).send(results)
+            : res.status(404).send({ error: 404, message: "Query Not Found or Not Exist", reference: "https://http.cat/404" });
+
+        results 
+            ? res.status(302).send(results)
+            : res.status(404).send({ error: 404, message: "Query Not Exist", reference: "https://http.cat/404" });
+
+    } catch (error) {
+        res.status(500).send({
+            error: error,
+            message: error.message,
+            reference: "https://http.cat/500"
+        })
     }
 }

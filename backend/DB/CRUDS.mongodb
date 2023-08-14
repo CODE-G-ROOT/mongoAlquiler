@@ -8,7 +8,8 @@ db.cliente.find({}, {
   Teléfono: "$Teléfono",
 }).sort({ _id: 1 }).toArray();
 
-//TODO      Obtener todos los automóviles disponibles para alquiler.
+//? CHECK
+//TODO     Obtener todos los automóviles disponibles para alquiler.
 use("db_campus_alquiler");
 db.automovil.aggregate([
   {
@@ -313,8 +314,8 @@ db.alquiler.aggregate([
 use("db_campus_alquiler");
 db.empleado.find({ Cargo: "Vendedor" });
 
-//TODO      Mostrar la cantidad total de automóviles disponibles en cada sucursal.
 //? CHECK
+//TODO      Mostrar la cantidad total de automóviles disponibles en cada sucursal.
 use("db_campus_alquiler");
 db.sucursal.aggregate([
   {
@@ -368,6 +369,7 @@ db.sucursal.aggregate([
   }
 ]);
 
+//? CHECK
 //TODO      Obtener el costo total de un alquiler específico.
 //* Queda pendiente configurar los inserts y agregar el campo de costo_total
 //* Sin embargo lo que estaría bien hecho sería agregar el campo y que por medio de un calculo de fechas y valor del dia según el auto, saque el valor del costo total,
@@ -489,10 +491,12 @@ db.alquiler.aggregate([
   },
 ]);
 
+
 //TODO      Listar los clientes con el DNI específico.
 use("db_campus_alquiler");
 db.cliente.find({})
 
+//? CHECK
 //TODO      Mostrar todos los automóviles con una capacidad mayor a 4 personas
 use("db_campus_alquiler");
 db.automovil.find({
@@ -501,6 +505,7 @@ db.automovil.find({
   }
 })
 
+//? CHECK
 //TODO      Obtener los detalles del alquiler que tiene fecha de inicio en '2023-07-05'.
 //! Corregir la db dado que ninguno empieza con esa fecha
 use("db_campus_alquiler");
@@ -581,6 +586,8 @@ db.cliente.aggregate([
   }
 ]).toArray();
 
+
+//TODO IN PROGRESS
 //TODO     Listar todos los automóviles ordenados por marca y modelo
 use("db_campus_alquiler");
 db.automovil.find({}).sort({
@@ -651,15 +658,21 @@ db.sucursal_automovil.aggregate([
   }
 ]);
 
+
+//? CHECK
 //TODO     Obtener la cantidad total de alquileres registrados en la base de datos.
 use("db_campus_alquiler");
 db.alquiler.find({});
 
+
+//? CHECK
 //TODO     Mostrar los automóviles con capacidad igual a 5 personas y que estén disponibles.
 //! CORREGIR LA DATA YA QUE NO HAY AUTOS CON CAPACIDAD DE 5 PERSONAS
 use("db_campus_alquiler");
 db.automovil.find({ Capacidad: 4 });
 
+
+//? CHECK
 //TODO     Listar los alquileres con fecha de inicio entre '2023-07-05' y '2023-07-10'.
 //! CORREGIR LA DATA YA QUE NO HAY FECHAS QUE INICIEN EN '2023-07-05' Y TERMINEN EN '2023-07-10'
 use("db_campus_alquiler");

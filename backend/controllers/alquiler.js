@@ -47,15 +47,17 @@ export async function getAlquileres_actives(req, res) {
         let query = {
             Estado: req.params.sts
         };
+
         query = query.Estado;
-        console.log(query);
+
+        //valida los dos puntos
         if (query == ":Activo" || query == ":Disponible") {
             return res.status(404).send({
                 error: 404,
                 message: 'Query Not Found',
                 correcttion: query.substring(1)
             }
-        )}//valida los dos puntos
+        )}
 
         if (query === "Activo" || query === "Disponible") {
             let results = await collection.aggregate([
@@ -159,6 +161,7 @@ export async function getAlquileres_actives(req, res) {
             console.log(req.rateLimit);
             return res.status(200).send(results)
         }
+
         else {
             res.status(404).send({
                 status: 404,
@@ -255,7 +258,7 @@ export async function getAlquileres_fechas(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).send({
-            error: 500,
+            error: error,
             message: error.message,
             date_format: "YYYY-MM-DD",
             example: "2023-01-01",
