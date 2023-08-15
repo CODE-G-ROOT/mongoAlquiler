@@ -1,43 +1,43 @@
 import { Expose, Transform } from 'class-transformer';
 import { IsDefined, IsISBN, IsNumber, IsString, Matches } from 'class-validator';
 
-export class Automovil {
-    @Expose({ name: "alquiler" })
+export class Cliente {
+    @Expose({ name: "Cliente" })
     @IsNumber({}, { message: () => { throw { status: 400, message: "Param would be a Number", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    ID_Automovil: number = 0;
+    ID_Cliente: number = 0;
 
-    @Expose({ name: "marca" })
+    @Expose({ name: "nombre" })
     @IsString({ message: () => { throw { status: 400, message: "Param would be a string", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    Marca: string = '';
+    Nombre: string = '';
 
-    @Expose({ name: "modelo" })
+    @Expose({ name: "apellido" })
     @IsString({ message: () => { throw { status: 400, message: "Param would be a string", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    Modelo: string = '';
+    Apellido: string = '';
 
-    @Expose({ name: "año" })
+    @Expose({ name: "dni" })
     @IsNumber({}, { message: () => { throw { status: 400, message: "Param would be a Number", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    Año: number = 0;
+    DNI: number = 0;
 
-    @Expose({ name: "tipo" })
+    @Expose({ name: "direccion" })
     @IsString({ message: () => { throw { status: 400, message: "Param would be a string", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    Tipo: String = '';
+    Dirección: String = '';
 
-    @Expose({ name: "capacidad" })
+    @Expose({ name: "tel" })
     @IsNumber({}, { message: () => { throw { status: 400, message: "Param would be a Number", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    Capacidad: number = 0;
+    Teléfono: number = 0;
 
-    @Expose({ name: "precio_diario" })
-    @IsNumber({}, { message: () => { throw { status: 400, message: "Param would be a Number", reference: "https://http.cat/400" } } })
+    @Expose({ name: "email" })
+    @IsString({ message: () => { throw { status: 400, message: "Param would be a String", reference: "https://http.cat/400" } } })
     @IsDefined({ message: () => { throw { status: 400, message: "The param is required", refernece: "https://http.cat/400" } } })
-    Precio_Diario: number = 0;
+    Email: String = '';
 
-    constructor(data: Partial<Automovil>) {
+    constructor(data: Partial<Cliente>) {
         Object.assign(this, data);
     }
 }
