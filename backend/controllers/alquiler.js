@@ -10,13 +10,13 @@ export async function getAlquileres(req, res) {
             .limit(50)
             .toArray();
 
-        if (results == '') return res.status(204).send({ status: 204, message: "Found But Without Not Contain" })
+        results > 0
+            ? res.send(results).status(200)
+            : res.status(204).send({ status: 204, message: "Found But Without Not Contain" })
 
         console.log(req.rateLimit);
-        res.send(results).status(200)
 
     } catch (error) {
-
         console.error(error);
         res.status(404).send("Query Not Found")
     }
