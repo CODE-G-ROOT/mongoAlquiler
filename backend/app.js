@@ -14,6 +14,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json());
 app.use("/alquiler", alquiler, verify ); //? COMPLETE
 app.use("/automoviles", automovil, verify ); //? COMPLETE
 app.use("/clientes", clientes, verify );  //? COMPLETE

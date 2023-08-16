@@ -17,7 +17,7 @@ import {
 
 const alquiler = Router();
 
-alquiler.get("/", confiGET(), getAlquileres);
+alquiler.get("/", confiGET(), getAlquileres, middle_Verify_Alquiler);
 alquiler.get("/search=:id", confiGET(), getAlquileres_id, middle_Verify_Alquiler);
 alquiler.get("/search-estado=:sts", confiGET(), getAlquileres_actives, middle_Verify_Alquiler);
 alquiler.get("/search-costo_total=:id", confiGET(), getAlquileres_costo_total, middle_Verify_Alquiler);

@@ -90,9 +90,6 @@ db.alquiler.insertMany([
   }
 ]);
 
-// use("db_campus_alquiler");
-// db.alquiler.drop()
-
 //? CHECK
 use("db_campus_alquiler");
 db.createCollection("automovil", {

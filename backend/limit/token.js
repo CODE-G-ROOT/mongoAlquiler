@@ -28,7 +28,7 @@ const DTO = (p1) => {
     };
 
     const inst = match[p1];
-    if(!inst) throw {status: 404, message: "Token solicitado no valido"}
+    if(!inst) throw {status: 404, message: "Token invalid"}
     return { atributos: plainToClass(inst, {}, { ignoreDecorators: true }), class: inst}
 };
 
@@ -51,7 +51,7 @@ token.use("/:collecion", async(req,res)=>{
 
 verify.use("/", async(req,res,next)=>{
     const {authorization} = req.headers;
-    if (!authorization) return res.status(400).send({status: 400, token: "Token no enviado"});
+    if (!authorization) return res.status(400).send({status: 400, token: "Invalid Token"});
     try {
         const encoder = new TextEncoder();
         const jwtData = await jwtVerify(
