@@ -6,7 +6,7 @@ export let confiGET = () => rateLimit({
     standardHeaders : true,
     legacyHeaders : false,
     skip: (req, res) =>{
-        if(req.headers['content-length']>91) {
+        if(req.headers['content-length']>300) {
             res.status(413).send({
                 status : 413,
                 message : "Tamaño exedido"

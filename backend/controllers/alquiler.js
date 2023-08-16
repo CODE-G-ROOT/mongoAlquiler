@@ -1,6 +1,7 @@
 import db from "../connection/mongo.js";
 import { ObjectId } from "mongodb";
 
+//* GET
 export async function getAlquileres(req, res) {
 
     try {
@@ -300,5 +301,87 @@ export async function getAlquileres_cliente(req, res) {
             console.log(error);
             res.status(404).send("Query Not Found or Empty");
         }
+    }
+}
+
+
+//* POST
+export async function postAlquileres(req,res){
+    try {
+        
+        let collection = await db.collection("alquiler");
+        let query = {
+            ...req.body,
+            Fecha_Inicio: new Date (req.body.Fecha_Fin),
+            Fecha_Fin: new Date (req.body.Fecha_fin)
+        }
+        let results = await collection.insertOne(query);
+
+        results.length > 0
+            ? res.status(202).send("Accept Sucessful")
+            : res.status(406).send({error: 406, message: "Insert not found"})
+
+    } catch (error) {
+        res.status(500).send({
+            error: 500,
+            message: error.message,
+            reference: "https://http.cat/500",
+            type: TypeError,
+            SyntaxError: SyntaxError,
+            ReferenceError: ReferenceError
+        })
+    }
+}
+
+export async function postManyAlquileres(req,res){
+
+    try {
+        let collection = db.collection('alquiler');
+        let query = {
+            ...req.body,
+            Fecha_Inicio: new Date (req.body.Fecha_Fin),
+            Fecha_Fin: new Date (req.body.Fecha_fin)
+        }
+        let results = collection.insertMany([query]);
+
+        results.length > 0
+            ? res.status(202).send("Accept Sucessful")
+            : res.status(406).send({error: 406, message: "Insert not found", result: results})
+
+    } catch (error) {
+        res.status(500).send({
+            error: 500,
+            message: error.message,
+            reference: "https://http.cat/500",
+            TypeError
+        })
+    }
+}
+
+
+//* PUT
+export async function putAlquiler(req, res) {
+    try {
+        let collection = db.collection("alquiler");
+        let query = {
+            id: { _id: new ObjectId(req.params.id) },
+            data: {
+                ...req.body
+            },
+        };
+
+        let result = await collection.updateOne(query.id, { $set: query.data });
+
+        result.modifiedCount > 0 && result.acknowledged === true
+            ? res.status(404).send({ error: 304,message: "Operation reconoziced but not modified",refernece: "https://http.cat",})
+            : res.status(202).send(result)
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: 500,
+            message: error.message,
+            message_2: "No fué posible actualizar la base de datos",
+        });
     }
 }
