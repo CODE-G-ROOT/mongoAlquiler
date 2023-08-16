@@ -10,7 +10,7 @@ import { Automovil } from '../DTO/automovil.js';
 import { Cliente } from '../DTO/cliente.js';
 import { Empleado } from '../DTO/empleado.js';
 import { Reserva } from '../DTO/reserva.js';
-import { Sucursal_Automovil } from '../DTO/sucursal_automovil';
+import { Sucursal_Automovil } from '../DTO/sucursal_automovil.js';
 
 dotenv.config("../");
 const token = Router();
@@ -18,31 +18,38 @@ const verify = Router();
 
 const DTO = (p1) => {
     const match = {
-        'usuario': User,
+        "alquiler" : Alquiler,
+        "automovil" : Automovil,
+        "cliente" : Cliente,
+        "empleado" : Empleado,
+        "reserva" : Reserva,
+        "sucursal_automovil" : Sucursal_Automovil,
         'mongo': Error
     };
+
     const inst = match[p1];
     if(!inst) throw {status: 404, message: "Token solicitado no valido"}
     return { atributos: plainToClass(inst, {}, { ignoreDecorators: true }), class: inst}
 };
 
-appToken.use("/:collecion", async(req,res)=>{
+token.use("/:collecion", async(req,res)=>{
     try {
         let inst = DTO(req.params.collecion).atributos;
         const encoder = new TextEncoder();
         const jwtconstructor = new SignJWT(Object.assign({}, classToPlain(inst)));
         const jwt = await jwtconstructor
-        .setProtectedHeader({alg:"HS256", typ: "JWT"})
-        .setIssuedAt()
-        .setExpirationTime("30m")
-        .sign(encoder.encode(process.env.JWT_PRIVATE_KEY));
+            .setProtectedHeader({alg:"HS256", typ: "JWT"})
+            .setIssuedAt()
+            .setExpirationTime("30m")
+            .sign(encoder.encode(process.env.JWT_PRIVATE_KEY));
         res.status(201).send({status: 201, message: jwt});
+
     } catch (error) {
         res.status(error.status).send(error);
     }
 })
 
-appVerify.use("/", async(req,res,next)=>{
+verify.use("/", async(req,res,next)=>{
     const {authorization} = req.headers;
     if (!authorization) return res.status(400).send({status: 400, token: "Token no enviado"});
     try {
@@ -59,9 +66,7 @@ appVerify.use("/", async(req,res,next)=>{
 })
 
 export {
-    appToken,
-    appVerify,
+    token,
+    verify,
     DTO
 }
-
-/* DAVID ES PUTO */
