@@ -166,13 +166,9 @@ export async function getAuomoviles_Modelo_Marca(req, res) {
             ? res.status(302).send(results)
             : res.status(404).send({ error: 404, message: "Query Not Found or Not Exist", reference: "https://http.cat/404" });
 
-        results 
-            ? res.status(302).send(results)
-            : res.status(404).send({ error: 404, message: "Query Not Exist", reference: "https://http.cat/404" });
-
     } catch (error) {
         res.status(500).send({
-            error: error,
+            error: 500,
             message: error.message,
             reference: "https://http.cat/500"
         })

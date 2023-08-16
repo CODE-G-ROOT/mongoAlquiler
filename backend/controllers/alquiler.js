@@ -12,7 +12,7 @@ export async function getAlquileres(req, res) {
         let results = await collection.find({}).toArray();
 
         results.length > 0
-            ? res.send(results).status(200)
+            ? res.send(results).status(302)
             : res.status(404).send({ status: 404, message: "Found But Without Contain" })
 
         console.log(req.rateLimit);
@@ -30,12 +30,12 @@ export async function getAlquileres_id(req, res) {
             _id: new ObjectId(req.params.id)
         }
 
-        let results = await collection.find(query).limit(50).toArray();
+        let results = await collection.find(query).toArray();
 
-        if (results.length === 0) {
-            res.status(404).send('Alquiler Not Found')
-        }
-        res.status(200).send(results);
+        results.length > 0 
+            ? res.status(302).send(results)
+            : res.status(404).send({error: 404, message: 'Alquiler Not Found or Found but without contain', reference: "https://http.cat/404"})
+
     } catch (error) {
         console.error("Error:", error);
         res.status(500).send({
@@ -58,10 +58,11 @@ export async function getAlquileres_actives(req, res) {
 
         //valida los dos puntos
         if (query == ":Activo" || query == ":Disponible") {
-            return res.status(404).send({
-                error: 404,
+            return res.status(400).send({
+                error: 400,
                 message: 'Query Not Found',
-                correcttion: query.substring(1)
+                correcttion: query.substring(1),
+                reference: "https://http.cat/400"
             }
         )}
 
@@ -172,7 +173,8 @@ export async function getAlquileres_actives(req, res) {
             res.status(404).send({
                 status: 404,
                 message: `${query} Not Found`,
-                example: "seach-estado=['opcion']"
+                example: "seach-estado=['opcion']",
+                reference:"https://http.cat/404"
             })
             /* OPTIONAL */
             // res.status(404).send(`
@@ -188,8 +190,9 @@ export async function getAlquileres_actives(req, res) {
         }
     } catch (error) {
         console.error({
-            error: error,
-            message: error.message
+            error: 500,
+            message: error.message,
+            reference : "https://http.cat/500"
         });
         /* OPTIONAL */
         // console.error({`
@@ -211,11 +214,15 @@ export async function getAlquileres_costo_total(req, res) {
         let query = {
             _id: new ObjectId(req.params.id)
         }
-
+        
         let results = await collection.find(query).limit(50).toArray();
 
+        results.length > 0
+            ? res.status(302).send(results)
+            : res.status(404).send({error: 404, message: "Query Found but whitout contain"})
+
         console.log(req.rateLimit);
-        res.send(results).status(200)
+
     } catch (error) {
         console.error(error);
         res.status(404).send({
@@ -234,7 +241,7 @@ export async function getAlquileres_fechas(req, res) {
             inicio : req.params.inicio,
             fin: req.params.fin
         }
-        
+
         data = query;
 
         if (query.inicio.length > 10) return fecha_inicio = query.inicio.substring(1);
@@ -252,10 +259,16 @@ export async function getAlquileres_fechas(req, res) {
             }
         }).toArray();
 
-        if ((inicio == '') || (fin == '')) return res.status(404).send("Query Not Found");
-        if (results.length === 0) return res.status(204).send("Query Not Found");
-        if (results.length > 0) return res.status(200).send(results);
-        else res.status(204).send("Not Content")
+        if ((inicio == '') | (fin == '')) return res.status(400).send({
+            error: 400, 
+            message: "Params 'start_date' and 'end_date' are required", 
+            format: "YYYY-MM-DD", 
+            reference: "https://http.cat/400"
+        });
+        
+        results.length > 0  
+            ?res.status(200).send(results)
+            : res.status(404).send({error: 404, message: "Query Not Found or Found but don't exist", reference: "https://http.cat/404"});
 
     } catch (error) {
         console.error(error);
@@ -264,10 +277,10 @@ export async function getAlquileres_fechas(req, res) {
             message: error.message,
             date_format: "YYYY-MM-DD",
             example: "2023-01-01",
-            data : data
+            data : data,
+            refernece: "https://http.cat/500"
             
         });
-
     }
 }
 
@@ -277,19 +290,26 @@ export async function getAlquileres_fecha(req, res) {
         let collection = await db.collection('alquiler');
         const fecha = new Date("2023-08-01T00:00:00Z")
 
-        if (fecha === '') return res.status(404).send("Query Not Found");
+        if (fecha === '') return res.status(400).send({error: 400, message: "Param Date Is Required", reference: "https://http.cat/400"});
 
         let results = await collection.find({
             Fecha_Inicio: { $gte: fecha }
         }).toArray();
 
-        res.status(200).send(results);
+        results.length > 0 
+            ? res.status(200).send(results)
+            : res.status(404).send({error: 404, message: "Query Not Found or Found but don't exist", reference: "https://http.cat/404"});
+
     } catch (error) {
         console.error({
             error: error,
             message: error.message
         });
-        res.status(204).send('Not Found')
+        res.status(500).send({
+            error: 500, 
+            message: error.message,
+            reference: "https://http.cat/500"
+        })
     }
 }
 
@@ -301,11 +321,15 @@ export async function getAlquileres_cliente(req, res) {
 
             results.length > 0
                 ? res.status(200).send(results)
-                : res.send(204).send("Query without conent")
+                : res.send(404).send({error: 404, message:"Query without conent", refenrece: "https://http.cat/404"})
 
         } catch (error) {
             console.log(error);
-            res.status(404).send("Query Not Found or Empty");
+            res.status(500).send({
+                error: 500,
+                message: error.message,
+                reference: "https://http.cat/500"
+            });
         }
     }
 }
