@@ -1,5 +1,7 @@
 import db from "../connection/mongo.js";
 import { ObjectId } from "mongodb";
+import { DTO } from "../limit/token.js"
+import { rateLimit } from "express-rate-limit";
 
 //* GET
 export async function getAlquileres(req, res) {
@@ -7,13 +9,11 @@ export async function getAlquileres(req, res) {
     try {
         
         let collection = await db.collection("alquiler");
-        let results = await collection.find({})
-            .limit(50)
-            .toArray();
+        let results = await collection.find({}).toArray();
 
-        results > 0
+        results.length > 0
             ? res.send(results).status(200)
-            : res.status(204).send({ status: 204, message: "Found But Without Not Contain" })
+            : res.status(404).send({ status: 404, message: "Found But Without Contain" })
 
         console.log(req.rateLimit);
 
@@ -38,7 +38,12 @@ export async function getAlquileres_id(req, res) {
         res.status(200).send(results);
     } catch (error) {
         console.error("Error:", error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).send({
+            error: 500,
+            native_message: error.message,
+            custon_menssage: "The passed argument is incorrect. either very long or very short",
+            reference: "https://http.cat/500"
+        });
     }
 }
 
@@ -294,9 +299,10 @@ export async function getAlquileres_cliente(req, res) {
             let collection = await db.collection("alquiler");
             let results = await collection.find({}).toArray();
 
-            if (results === '') res.send(204).send("Query without conent")
+            results.length > 0
+                ? res.status(200).send(results)
+                : res.send(204).send("Query without conent")
 
-            res.status(200).send(results);
         } catch (error) {
             console.log(error);
             res.status(404).send("Query Not Found or Empty");
@@ -307,29 +313,29 @@ export async function getAlquileres_cliente(req, res) {
 
 //* POST
 export async function postAlquileres(req,res){
+    if (!rateLimit) return;
     try {
-        
-        let collection = await db.collection("alquiler");
-        let query = {
+        let collecion = db.collection("alquiler");
+        const transformedData = {
             ...req.body,
-            Fecha_Inicio: new Date (req.body.Fecha_Fin),
-            Fecha_Fin: new Date (req.body.Fecha_fin)
-        }
-        let results = await collection.insertOne(query);
-
-        results.length > 0
-            ? res.status(202).send("Accept Sucessful")
-            : res.status(406).send({error: 406, message: "Insert not found"})
-
+            Fecha_Inicio: new Date(req.body.Fecha_Inicio),
+            Fecha_Fin: new Date(req.body.Fecha_Fin)
+        };
+        
+        let result = await collecion.insertOne(transformedData); 
+        res.send({ message: "alquiler ingresado correctamente", result });
+    
     } catch (error) {
-        res.status(500).send({
-            error: 500,
-            message: error.message,
-            reference: "https://http.cat/500",
-            type: TypeError,
-            SyntaxError: SyntaxError,
-            ReferenceError: ReferenceError
-        })
+        /* console.log(error.errInfo.details.schemaRulesNotSatisfied);
+        const propertiesNotSatisfied = error.errInfo.details.schemaRulesNotSatisfied;
+        propertiesNotSatisfied.forEach(property => {
+            console.log(`Property: ${property.operatorName}`);
+            console.log(`Unsatisfied property: ${property.propertyName}`);
+            console.log(`Description: ${property.description}`);
+            console.log("Details:", property.details);
+        }); */
+        console.log("Este id ya existe");
+        res.send({ message: "No fue posible ingresar el alquiler, el id ya existe" });
     }
 }
 
