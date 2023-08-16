@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { confiGET } from "../middleware/limit.js";
+import { confiGET } from "../limit/limit.js";
 
 import { 
     getAlquileres,
