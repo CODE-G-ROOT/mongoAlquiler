@@ -23,7 +23,7 @@ middle_Verify_cliente.use((req, res, next)=>{
     req.data = undefined; 
 
     (!Verify) 
-        ? res.status(406).send({ status: 401, message: "Not autorized", reference: "https://http.cat/401"})
+        ? res.status(406).send({ status: 406, message: "Not autorized", reference: "https://http.cat/401"})
         : next()
 });
 
