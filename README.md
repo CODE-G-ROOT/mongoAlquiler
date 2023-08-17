@@ -1,10 +1,9 @@
+# Alquiler de Automoviles
 
 El sistema de alquiler y gestión de reservas para autos es una solución optimizada basada en **Node.js, Express.js y MongoDB**, diseñada para mejorar la eficiencia de los procesos y ofrecer un servicio excepcional a los clientes.
 
-<hr>
-<br>
+## ÍNDICE
 
-# ÍNDICE
 - [Configuración de las Variables de Entorno](#configuración-de-las-variables-de-entorno)
 - [¿Cómo Utilizar el Software?](#cómo-utilizar-el-software)
 - [Rutas](#rutas)
@@ -14,6 +13,11 @@ El sistema de alquiler y gestión de reservas para autos es una solución optimi
   - [Empleados](#empleados)
   - [Reservas](#reservas)
   - [Sucursal Automóvil](#sucursal-automóvil)
+- [Más Info](#más-info)
+  - [Tecnologías Utilizadas](#tecnologías-utilizadas)
+  - [Depencias](#dependencias)
+  - [Contribuciones y licencia](#contribuciones-y-licencia)
+
 
 <br>
 
@@ -149,3 +153,69 @@ ente, Recepcionista y Vendedor.
 ## Sucursal Automóvil
 
 - `http://[tu_host]:[tu_puerto]/sucursal-automovil`: Consulta relación entre sucursales y autos.
+
+# 
+
+
+
+# Más Info
+
+<br>
+
+## Tecnologías Utilizadas
+
+- Node.js
+- Expres.js
+- MongoDB
+- TypeScript
+
+<br>
+
+<hr>
+
+## Dependencias
+
+- [class-transformer](https://github.com/typestack/class-transformer) : Biblioteca que simplifica la transformación de objetos entre diferentes estructuras de datos, como objetos TypeScript y JSON
+- [class-validator](https://github.com/typestack/class-validator) : Validación de objetos basada en decoradores en TypeScript y JavaScript
+- [dotenv](https://www.npmjs.com/package/dotenv) : Biblioteca para cargar variables de entorno desde un archivo `.env` en el entorno de Node.js
+- [express](https://expressjs.com/) : Un marco de aplicación web minimalista y flexible para Node.js que facilita la creación de aplicaciones web y APIs.
+- [express-rate-limit](https://www.npmjs.com/package/express-rate-limit) : Un middleware para Express que implementa límites de velocidad y control de acceso basado en IP 
+- [jose](https://github.com/panva/jose) : Una biblioteca que implementa los estándares JSON Web Token (JWT) y JSON Web Signature (JWS)
+- [mongodb](https://www.npmjs.com/package/mongodb) : El controlador oficial de MongoDB para Node.js, que permite interactuar con bases de datos MongoDB
+- [nodemon](https://www.npmjs.com/package/nodemon) : Una herramienta que monitoriza cambios en archivos y automáticamente  reinicia la aplicación Node.js para un flujo de desarrollo más eficiente
+- [reflect-metadata](https://www.npmjs.com/package/reflect-metadata) :  Una librería que proporciona metadatos sobre tipos en tiempo de  ejecución. Se utiliza comúnmente con otras bibliotecas de TypeScript,  como `class-transformer` y `class-validator`,
+- [typescript](https://www.typescriptlang.org/docs/) : lenguaje de programación que extiende JavaScript al agregar tipos  estáticos y otros características para el desarrollo más seguro y  estructurado
+
+<br>
+
+<hr>
+
+### Contribuciones y licencia
+
+¡Agradecemos tus contribuciones al proyecto! Si deseas colaborar, sigue los siguientes pasos:
+
+1. Crea un nuevo "branch" para tus cambios.
+
+   ```shell
+   git checkout -b mi-nueva-funcionalidad    
+   ```
+
+2. Realiza tus modificaciones y mejoras.
+
+3. Haz un "commit" de tus cambios.
+
+   ```shell
+   git commit -m "Agrego nueva funcionalidad"      
+   ```
+
+4. Envía tus cambios al repositorio remoto.
+
+   ```shell
+   git push origin mi-nueva-funcionalidad    
+   ```
+
+4. Abre un "**Pull Request**" en GitHub para que revisemos tus cambios.
+
+Este proyecto se encuentra bajo la Licencia MIT. Siéntete  libre de utilizar, modificar y distribuir el código según tus  necesidades.
+
+¡Gracias por contribuir al proyecto "mongoAlquiler"! 
