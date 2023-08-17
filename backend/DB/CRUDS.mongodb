@@ -156,83 +156,83 @@
 
 //? CHECK
 //TODO      Mostrar todas las reservas pendientes con los datos del cliente y el automóvil reservado.
-use("db_campus_alquiler");
-db.reserva.aggregate([
-  {
-    $lookup: {
-      from: "cliente",
-      localField: "ID_Cliente",
-      foreignField: "ID_Cliente",
-      as: "cliente",
-    },
-  },
-  {
-    $unwind: "$cliente",
-  },
-  {
-    $lookup: {
-      from: "automovil",
-      localField: "ID_Automovil",
-      foreignField: "ID_Automovil",
-      as: "automovil",
-    },
-  },
-  {
-    $unwind: "$automovil",
-  },
-  // {
-  //   $match: { Estado: "Pendiente" }
-  // },
-  {
-    $group: {
-      _id: "$ID_Reserva",
-      ID_Cliente: { $addToSet: "$cliente" },
-      ID_Automovil: { $addToSet: "$automovil" },
-      Fecha_Reserva: { $first: "$Fecha_Reserva" },
-      Fecha_Inicio: { $first: "$Fecha_Inicio" },
-      Fecha_Fin: { $first: "$Fecha_Fin" },
-      Estado: { $first: "$Estado" },
-    }
-  },
-  {
-    $project: {
-      _id: 1,
-      ID_Cliente: 1,
-      ID_Automovil: {
-        ID_Automovil : 1,
-        Marca : 1,
-        Modelo : 1,
-        Año : 1,
-        Tipo : 1,
-        Capacidad : 1,
-        Precio_Diario : 1,
-      },
-      Fecha_Reserva: {
-        $dateToString: {
-          date: "$Fecha_Reserva",
-          format: "%Y-%m-%dT%H:%M:%SZ"
-        }
-      },
-      Fecha_Inicio: {
-        $dateToString: {
-          date: "$Fecha_Inicio",
-          format: "%Y-%m-%dT%H:%M:%SZ"
-        }
-      },
-      Fecha_Fin: {
-        $dateToString: {
-          date: "$Fecha_Fin",
-          format: "%Y-%m-%dT%H:%M:%SZ"
-        }
-      },
-      Estado: 1,
-    }
-  },
-  {
-    $sort: { _id: 1 }
-  }
+// use("db_campus_alquiler");
+// db.reserva.aggregate([
+//   {
+//     $lookup: {
+//       from: "cliente",
+//       localField: "ID_Cliente",
+//       foreignField: "ID_Cliente",
+//       as: "cliente",
+//     },
+//   },
+//   {
+//     $unwind: "$cliente",
+//   },
+//   {
+//     $lookup: {
+//       from: "automovil",
+//       localField: "ID_Automovil",
+//       foreignField: "ID_Automovil",
+//       as: "automovil",
+//     },
+//   },
+//   {
+//     $unwind: "$automovil",
+//   },
+//   // {
+//   //   $match: { Estado: "Pendiente" }
+//   // },
+//   {
+//     $group: {
+//       _id: "$ID_Reserva",
+//       ID_Cliente: { $addToSet: "$cliente" },
+//       ID_Automovil: { $addToSet: "$automovil" },
+//       Fecha_Reserva: { $first: "$Fecha_Reserva" },
+//       Fecha_Inicio: { $first: "$Fecha_Inicio" },
+//       Fecha_Fin: { $first: "$Fecha_Fin" },
+//       Estado: { $first: "$Estado" },
+//     }
+//   },
+//   {
+//     $project: {
+//       _id: 1,
+//       ID_Cliente: 1,
+//       ID_Automovil: {
+//         ID_Automovil : 1,
+//         Marca : 1,
+//         Modelo : 1,
+//         Año : 1,
+//         Tipo : 1,
+//         Capacidad : 1,
+//         Precio_Diario : 1,
+//       },
+//       Fecha_Reserva: {
+//         $dateToString: {
+//           date: "$Fecha_Reserva",
+//           format: "%Y-%m-%dT%H:%M:%SZ"
+//         }
+//       },
+//       Fecha_Inicio: {
+//         $dateToString: {
+//           date: "$Fecha_Inicio",
+//           format: "%Y-%m-%dT%H:%M:%SZ"
+//         }
+//       },
+//       Fecha_Fin: {
+//         $dateToString: {
+//           date: "$Fecha_Fin",
+//           format: "%Y-%m-%dT%H:%M:%SZ"
+//         }
+//       },
+//       Estado: 1,
+//     }
+//   },
+//   {
+//     $sort: { _id: 1 }
+//   }
 
-]).toArray();
+// ]).toArray();
 
 // //? Check     Listar todos los alquileres activos junto con los datos de los clientes relacionados.
 // use("db_campus_alquiler");
@@ -343,58 +343,58 @@ db.reserva.aggregate([
 
 
 //TODO      Mostrar la cantidad total de automóviles disponibles en cada sucursal.
-use("db_campus_alquiler");
-db.sucursal.aggregate([
-  {
-    $lookup: {
-      from: "sucursal_automovil",
-      localField: "ID_Sucursal",
-      foreignField: "ID_Sucursal",
-      as: "sucursal_automovil",
-    },
-  },
-  {
-    $unwind: "$sucursal_automovil",
-  },
-  {
-    $lookup: {
-      from: "automovil",
-      localField: "sucursal_automovil.ID_Automovil",
-      foreignField: "ID_Automovil",
-      as: "automovil",
-    },
-  },
-  {
-    $unwind: "$automovil",
-  },
-  {
-    $group: {
-      _id: "$ID_Sucursal",
-      Nombre: { $first: "$Nombre" },
-      Dirección: { $first: "$Dirección" },
-      Teléfono: { $first: "$Teléfono" },
-      sucursal_automovil: { $addToSet: "$sucursal_automovil" },
-      automovil: { $addToSet: "$automovil" },
-    }
-  },
-  {
-    $project: {
-      _id: 1,
-      Nombre: 1,
-      Dirección: 1,
-      Teléfono: 1,
-      sucursal_automovil: {
-        ID_Sucursal: 1,
-        ID_Automovil: "$automovil"
-      },
-      Cantidad_Disponible: 1,
-    },
+// use("db_campus_alquiler");
+// db.sucursal.aggregate([
+//   {
+//     $lookup: {
+//       from: "sucursal_automovil",
+//       localField: "ID_Sucursal",
+//       foreignField: "ID_Sucursal",
+//       as: "sucursal_automovil",
+//     },
+//   },
+//   {
+//     $unwind: "$sucursal_automovil",
+//   },
+//   {
+//     $lookup: {
+//       from: "automovil",
+//       localField: "sucursal_automovil.ID_Automovil",
+//       foreignField: "ID_Automovil",
+//       as: "automovil",
+//     },
+//   },
+//   {
+//     $unwind: "$automovil",
+//   },
+//   {
+//     $group: {
+//       _id: "$ID_Sucursal",
+//       Nombre: { $first: "$Nombre" },
+//       Dirección: { $first: "$Dirección" },
+//       Teléfono: { $first: "$Teléfono" },
+//       sucursal_automovil: { $addToSet: "$sucursal_automovil" },
+//       automovil: { $addToSet: "$automovil" },
+//     }
+//   },
+//   {
+//     $project: {
+//       _id: 1,
+//       Nombre: 1,
+//       Dirección: 1,
+//       Teléfono: 1,
+//       sucursal_automovil: {
+//         ID_Sucursal: 1,
+//         ID_Automovil: "$automovil"
+//       },
+//       Cantidad_Disponible: 1,
+//     },
 
-  },
-  {
-    $sort: { _id: 1 }
-  }
-]);
+//   },
+//   {
+//     $sort: { _id: 1 }
+//   }
+// ]);
 
 // //? CHECK
 // //TODO      Obtener el costo total de un alquiler específico.
@@ -540,23 +540,23 @@ db.sucursal.aggregate([
 
 //? CHECK
 //TODO      Listar las reservas pendientes realizadas por un cliente específico
-use("db_campus_alquiler");
-db.reserva.find({
-  ID_Cliente: 1,
-  Estado: "Pendiente"
-});
+// use("db_campus_alquiler");
+// db.reserva.find({
+//   ID_Cliente: 1,
+//   Estado: "Pendiente"
+// });
 
 //? CHECK
 //TODO     Mostrar los empleados con cargo de "Gerente" o "Asistente"
-use("db_campus_alquiler");
-db.empleado.find(
-  {
-    $or: [
-      { Cargo: "Gerente" },
-      { Cargo: "Asistente" }
-    ]
-  }
-);
+// use("db_campus_alquiler");
+// db.empleado.find(
+//   {
+//     $or: [
+//       { Cargo: "Gerente" },
+//       { Cargo: "Asistente" }
+//     ]
+//   }
+// );
 
 //? CHEKC
 //TODO     Obtener los datos de los clientes que realizaron al menos un alquiler
@@ -659,67 +659,67 @@ db.empleado.find(
 
 
 //TODO     Mostrar la cantidad total de automóviles en cada sucursal junto con su dirección.
-use("db_campus_alquiler");
-db.sucursal_automovil.aggregate([
-  {
-    $lookup: {
-      from: "sucursal",
-      localField: "ID_Sucursal",
-      foreignField: "ID_Sucursal",
-      as: "sucursal"
-    }
-  },
-  {
-    $unwind: "$sucursal",
-  },
-  {
-    $lookup: {
-      from: "automovil",
-      localField: "ID_Automovil",
-      foreignField: "ID_Automovil",
-      as: "automovil"
-    }
-  },
-  {
-    $unwind: "$automovil",
-  },
-  {
-    $group: {
-      _id: "$ID_Sucursal",
-      ID_Automovil: { $first: "$ID_Automovil" },
-      Cantidad_Disponible: { $first: "$Cantidad_Disponible" },
-      sucursal: { $addToSet: "$sucursal" },
-      automovil: { $addToSet: "$automovil" },
-    }
-  },
-  {
-    $project: {
-      _id: 1,
-      // ID_Sucursal: "$sucursal",
-      // ID_Automovil : "$automovil",
-      sucursal : {
-        ID_Sucursal : 1,
-        Nombre : 1,
-        Dirección : 1,
-        Teléfono : 1,
-      },
-      automovil: {
-        ID_Automovil: 1,
-        Marca : 1,
-        Modelo : 1,
-        Año : 1,
-        Tipo : 1,
-        Capacidad : 1,
-        Precio_Diario : 1,
-      },
-      Cantidad_Disponible : 1,
+// use("db_campus_alquiler");
+// db.sucursal_automovil.aggregate([
+//   {
+//     $lookup: {
+//       from: "sucursal",
+//       localField: "ID_Sucursal",
+//       foreignField: "ID_Sucursal",
+//       as: "sucursal"
+//     }
+//   },
+//   {
+//     $unwind: "$sucursal",
+//   },
+//   {
+//     $lookup: {
+//       from: "automovil",
+//       localField: "ID_Automovil",
+//       foreignField: "ID_Automovil",
+//       as: "automovil"
+//     }
+//   },
+//   {
+//     $unwind: "$automovil",
+//   },
+//   {
+//     $group: {
+//       _id: "$ID_Sucursal",
+//       ID_Automovil: { $first: "$ID_Automovil" },
+//       Cantidad_Disponible: { $first: "$Cantidad_Disponible" },
+//       sucursal: { $addToSet: "$sucursal" },
+//       automovil: { $addToSet: "$automovil" },
+//     }
+//   },
+//   {
+//     $project: {
+//       _id: 1,
+//       // ID_Sucursal: "$sucursal",
+//       // ID_Automovil : "$automovil",
+//       sucursal : {
+//         ID_Sucursal : 1,
+//         Nombre : 1,
+//         Dirección : 1,
+//         Teléfono : 1,
+//       },
+//       automovil: {
+//         ID_Automovil: 1,
+//         Marca : 1,
+//         Modelo : 1,
+//         Año : 1,
+//         Tipo : 1,
+//         Capacidad : 1,
+//         Precio_Diario : 1,
+//       },
+//       Cantidad_Disponible : 1,
       
-    }
-  },
-  {
-    $sort: { _id: 1 }
-  }
-]);
+//     }
+//   },
+//   {
+//     $sort: { _id: 1 }
+//   }
+// ]);
 
 
 // //? CHECK
@@ -750,5 +750,5 @@ db.sucursal_automovil.aggregate([
 //   }
 // });
 
-use("db_campus_alquiler");
-db.alquiler.find({});
+// use("db_campus_alquiler");
+// db.alquiler.find({});
