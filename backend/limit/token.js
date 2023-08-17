@@ -51,7 +51,7 @@ token.use("/:collecion", async(req,res)=>{
 
 verify.use("/", async(req,res,next)=>{
     const {authorization} = req.headers;
-    if (!authorization) return res.status(400).send({status: 400, token: "Invalid Token"});
+    if (!authorization) return res.status(498).send({status: 498, token: "Invalid Token", reference: "https://http.cat/498"});
     try {
         const encoder = new TextEncoder();
         const jwtData = await jwtVerify(
@@ -61,7 +61,7 @@ verify.use("/", async(req,res,next)=>{
         req.data = jwtData;
         next();
     } catch (error) {
-        res.status(498).send({status: 498, token: "Token caducado"});
+        res.status(498).send({status: 498, token: "Token caducado", reference: "https://http.cat/498"});
     }
 })
 
