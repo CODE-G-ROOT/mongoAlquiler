@@ -114,9 +114,19 @@ Ahora que sabemos que el sistema puede funcionar en tu servidor, intentemos ejec
     ¡Listo! Tu servidor está en funcionamiento.
 
 <hr>
+
 # Rutas
 
+>[!Warning]
+>Antes de acceder a las rutas, primero tenemos que generar el token para tener acceso a estas. Para ello tenemos que hacer lo siguiente:
+>`http://[tu_host]:[tu_puerto]/token/[endpoint]` 🔍: Sustituye `endpoint` por el la ruta a la que se busca tener acceso.
+>Luego esto generará un token el cual tenemos que copiar y pegar en los headers de la solicitud.
+>En los headers tenemos que agregar un campo llamado "Authorization" y su valor va a ser el token que hayamos generado (osea pegar el token ahí).
+> Luego de haber realizar esta accion, podremos acceder libremente a nuestro endpoint
+
+  
 Ya tenemos corriendo nuestro servidor, pero ¿cómo ingresamos a la información almacenada en nuestra base de datos?. Pues aquí está la explicación de como ingresar a cada una de ellas:
+
 
 
 ## Alquiler:
